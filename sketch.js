@@ -1,14 +1,26 @@
 var trex, trex_running, trex_collided
 var ground, invisibleGround, groundImage
+var obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6
 var cloudImg
 
 function preload() {
-  trex_running = loadAnimation('trex1.png', 'trex2.png', 'trex3.png')
-  trex_collided = loadImage('trex_collided.png')
+  trex_running = loadAnimation(
+    'sprites/trex1.png',
+    'sprites/trex2.png',
+    'sprites/trex3.png'
+  )
+  trex_collided = loadImage('sprites/trex_collided.png')
 
-  groundImage = loadImage('ground2.png')
+  groundImage = loadImage('sprites/ground2.png')
 
-  cloudImg = loadImage('cloud.png')
+  cloudImg = loadImage('sprites/cloud.png')
+
+  obstacle1 = loadImage('sprites/obstacle1.png')
+  obstacle2 = loadImage('sprites/obstacle2.png')
+  obstacle3 = loadImage('sprites/obstacle3.png')
+  obstacle4 = loadImage('sprites/obstacle4.png')
+  obstacle5 = loadImage('sprites/obstacle5.png')
+  obstacle6 = loadImage('sprites/obstacle6.png')
 }
 
 function setup() {
@@ -49,6 +61,7 @@ function draw() {
   trex.collide(invisibleGround)
 
   criarNuvens()
+  criarObstacles()
 
   drawSprites()
 }
@@ -59,9 +72,51 @@ function criarNuvens() {
   if (frameCount % 60 === 0) {
     var cloud = createSprite(610, 40, 40, 10)
     cloud.addImage(cloudImg)
+    cloud.scale = 0.8
     //round: arredonda para o número mais próximo
     //random: número aleatório
     cloud.y = Math.round(random(10, 100))
     cloud.velocityX = -2
+
+    //tempo de vida
+    cloud.lifetime = 325
+
+    //profundidade
+    cloud.depth =
+  }
+}
+
+function criarObstacles() {
+  if (frameCount % 80 === 0) {
+    var obstacle = createSprite(610, 160, 10, 60)
+    obstacle.scale = 0.8
+    obstacle.velocityX = -4
+
+    var rand = Math.round(random(1, 6))
+    switch (rand) {
+      case 1:
+        obstacle.addImage(obstacle1)
+        break
+      case 2:
+        obstacle.addImage(obstacle2)
+        break
+      case 3:
+        obstacle.addImage(obstacle3)
+        break
+      case 4:
+        obstacle.addImage(obstacle4)
+        break
+      case 5:
+        obstacle.addImage(obstacle5)
+        break
+      case 6:
+        obstacle.addImage(obstacle6)
+        break
+      default:
+        break
+    }
+
+    //tempo de vida
+    obstacle.lifetime = 325
   }
 }
