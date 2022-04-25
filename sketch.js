@@ -51,7 +51,7 @@ function draw() {
     trex.velocityY = -10
   }
 
-  trex.velocityY = trex.velocityY + 0.8
+  gravity()
 
   if (ground.x < 0) {
     ground.x = ground.width / 2
@@ -60,10 +60,17 @@ function draw() {
   //impedir que o trex caia
   trex.collide(invisibleGround)
 
+  //chamar função de criar as nuvens
   criarNuvens()
+
+  //chamar função de criar os obstaculos
   criarObstacles()
 
   drawSprites()
+}
+
+function gravity() {
+  trex.velocityY = trex.velocityY + 0.8
 }
 
 function criarNuvens() {
@@ -82,7 +89,8 @@ function criarNuvens() {
     cloud.lifetime = 325
 
     //profundidade
-    cloud.depth =
+    cloud.depth = trex.depth
+    trex.depth += 1
   }
 }
 
