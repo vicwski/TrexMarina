@@ -17,6 +17,7 @@ function preload() {
     'sprites/trex2.png',
     'sprites/trex3.png'
   )
+  
   trex_collided = loadImage('sprites/trex_collided.png')
 
   groundImage = loadImage('sprites/ground.png')
@@ -97,7 +98,6 @@ function draw() {
     if (obstaclesGroup.isTouching(trex)) {
       gameState = END
     }
-
   } else if (gameState === END) {
     //visivilidade das sprites gameOver e restart
     gameOver.visible = true
