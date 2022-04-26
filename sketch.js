@@ -19,7 +19,7 @@ function preload() {
   )
   trex_collided = loadImage('sprites/trex_collided.png')
 
-  groundImage = loadImage('sprites/ground2.png')
+  groundImage = loadImage('sprites/ground.png')
 
   cloudImg = loadImage('sprites/cloud.png')
 
