@@ -1,7 +1,15 @@
+var PLAY = 1
+var END = 0
+var gameState = PLAY
+
 var trex, trex_running, trex_collided
 var ground, invisibleGround, groundImage
 var obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6
 var cloudImg
+var cloudsGroup, obstaclesGroup
+var gameOver, gameOverImg
+var restart, restartImg
+
 
 function preload() {
   trex_running = loadAnimation(
@@ -21,6 +29,7 @@ function preload() {
   obstacle4 = loadImage('sprites/obstacle4.png')
   obstacle5 = loadImage('sprites/obstacle5.png')
   obstacle6 = loadImage('sprites/obstacle6.png')
+
 }
 
 function setup() {
@@ -40,31 +49,44 @@ function setup() {
   //crie um solo invisível
   invisibleGround = createSprite(200, 190, 400, 10)
   invisibleGround.visible = false
+
+  //criar grupos
+  cloudsGroup = new Group()
+  obstaclesGroup = new Group()
 }
 
 function draw() {
   //definir cor do plano de fundo
   background(120)
 
-  // pulando o trex ao pressionar a tecla de espaço
-  if (keyDown('space') && trex.y >= 100) {
-    trex.velocityY = -10
-  }
+  if (gameState == PLAY) {
+    if (ground.x < 0) {
+      ground.x = ground.width / 2
+    }
 
-  gravity()
+    // pulando o trex ao pressionar a tecla de espaço
+    if (keyDown('space') && trex.y >= 100) {
+      trex.velocityY = -10
+    }
 
-  if (ground.x < 0) {
-    ground.x = ground.width / 2
+    gravity()
+
+    //chamar função de criar as nuvens
+    criarNuvens()
+
+    //chamar função de criar os obstaculos
+    criarObstacles()
+
+    if (obstaclesGroup.isTouching(trex)) {
+      gameState = END
+    }
+  } else if (gameState == END) {
+  
+  
   }
 
   //impedir que o trex caia
   trex.collide(invisibleGround)
-
-  //chamar função de criar as nuvens
-  criarNuvens()
-
-  //chamar função de criar os obstaculos
-  criarObstacles()
 
   drawSprites()
 }
@@ -91,6 +113,9 @@ function criarNuvens() {
     //profundidade
     cloud.depth = trex.depth
     trex.depth += 1
+
+    //grupo
+    cloudsGroup.add(cloud)
   }
 }
 
@@ -126,5 +151,8 @@ function criarObstacles() {
 
     //tempo de vida
     obstacle.lifetime = 325
+
+    //grupo
+    obstaclesGroup.add(obstacle)
   }
 }
