@@ -17,7 +17,7 @@ function preload() {
     'sprites/trex2.png',
     'sprites/trex3.png'
   )
-  
+
   trex_collided = loadImage('sprites/trex_collided.png')
 
   groundImage = loadImage('sprites/ground.png')
@@ -42,6 +42,8 @@ function setup() {
   trex = createSprite(50, 160, 20, 50)
   trex.addAnimation('running', trex_running)
   trex.scale = 0.5
+  trex.setCollider('circle', 0, 0, 40)
+  trex.debug = true
 
   //crie sprite ground (solo)
   ground = createSprite(200, 180, 400, 20)
