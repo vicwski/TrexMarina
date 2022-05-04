@@ -9,6 +9,7 @@ var cloudImg
 var cloudsGroup, obstaclesGroup
 var gameOver, gameOverImg
 var restart, restartImg
+var checkPointSound, dieSound, jumpSound
 var score = 0
 
 function preload() {
@@ -33,6 +34,8 @@ function preload() {
 
   gameOverImg = loadImage('sprites/gameOver.png')
   restartImg = loadImage('sprites/restart.png')
+
+  checkPointSound = loadSound('sounds/checkpoint.mp3')
 }
 
 function setup() {
@@ -75,6 +78,13 @@ function draw() {
   background(230)
 
   if (gameState === PLAY) {
+    //pontuação
+    score += Math.round(World.frameRate / 60)
+
+    if (score > 0 && score % 600 === 0) {
+      checkPointSound.play()
+    }
+
     //invisivilidade das sprites gameOver e restart
     gameOver.visible = false
     restart.visible = false
