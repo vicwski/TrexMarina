@@ -42,8 +42,9 @@ function setup() {
   trex = createSprite(50, 160, 20, 50)
   trex.addAnimation('running', trex_running)
   trex.scale = 0.5
+  //Raio colisor do trex
   trex.setCollider('circle', 0, 0, 40)
-  trex.debug = true
+  // trex.debug = true
 
   //crie sprite ground (solo)
   ground = createSprite(200, 180, 400, 20)
@@ -105,10 +106,17 @@ function draw() {
     gameOver.visible = true
     restart.visible = true
 
+    //Tirando a velocidade Y do trex
+    trex.velocityY = 0
+
     //Parando o solo e os grupos de sprite quando o estado do jogo é END
     ground.velocityX = 0
     obstaclesGroup.setVelocityXEach(0)
     cloudsGroup.setVelocityXEach(0)
+
+    //Tempo de vida infinito para os grupos de sprites
+    obstaclesGroup.setLifetimeEach(-1)
+    cloudsGroup.setLifetimeEach(-1)
   }
 
   //impedir que o trex caia
@@ -133,6 +141,7 @@ function criarNuvens() {
     var cloud = createSprite(610, 40, 40, 10)
     cloud.addImage(cloudImg)
     cloud.scale = 0.8
+
     //round: arredonda para o número mais próximo
     //random: número aleatório
     cloud.y = Math.round(random(10, 100))
@@ -153,7 +162,7 @@ function criarNuvens() {
 function criarObstacles() {
   if (frameCount % 80 === 0) {
     var obstacle = createSprite(610, 160, 10, 60)
-    obstacle.scale = 0.8
+    obstacle.scale = 0.7
     obstacle.velocityX = -4
 
     var rand = Math.round(random(1, 6))
