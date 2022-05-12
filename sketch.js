@@ -142,8 +142,7 @@ function draw() {
     cloudsGroup.setLifetimeEach(-1)
 
     //if para reiniciar
-
-    if(mousePressedOver(restart)){
+    if (mousePressedOver(restart)) {
       reset()
     }
   }
@@ -163,8 +162,19 @@ function gravity() {
   trex.velocityY = trex.velocityY + 0.8
 }
 
-function reset(){
+function reset() {
+  //mudar o estado do jogo
+  gameState = PLAY
 
+  //reiniciar a pontuação
+  score = 0
+
+  //destruir os grupos de obstaculos e de nuvens
+  obstaclesGroup.destroyEach()
+  cloudsGroup.destroyEach()
+
+  //alterar a animação do trex
+  trex.changeAnimation('running')
 }
 
 function criarNuvens() {
