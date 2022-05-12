@@ -36,6 +36,8 @@ function preload() {
   restartImg = loadImage('sprites/restart.png')
 
   checkPointSound = loadSound('sounds/checkpoint.mp3')
+  dieSound = loadSound('sounds/die.mp3')
+  jumpSound = loadSound('sounds/jump.mp3')
 }
 
 function setup() {
@@ -44,16 +46,18 @@ function setup() {
   //crie um sprite de trex
   trex = createSprite(50, 160, 20, 50)
   trex.addAnimation('running', trex_running)
+  trex.addAnimation('collided', trex_collided)
   trex.scale = 0.5
+
   //Raio colisor do trex
   trex.setCollider('circle', 0, 0, 40)
+  // trex.setCollider('rectangle', 0, 0, 420, trex.height)
   // trex.debug = true
 
   //crie sprite ground (solo)
   ground = createSprite(200, 180, 400, 20)
   ground.addImage('ground', groundImage)
   ground.x = ground.width / 2
-  ground.velocityX = -4
 
   //crie um solo invisível
   invisibleGround = createSprite(200, 190, 400, 10)
@@ -89,6 +93,8 @@ function draw() {
     gameOver.visible = false
     restart.visible = false
 
+    ground.velocityX = -(4 + (3 * score) / 100)
+
     //Reiniciar o solo
     if (ground.x < 0) {
       ground.x = ground.width / 2
@@ -97,6 +103,7 @@ function draw() {
     // pulando o trex ao pressionar a tecla de espaço
     if (keyDown('space') && trex.y >= 100) {
       trex.velocityY = -10
+      jumpSound.play()
     }
 
     gravity()
@@ -110,6 +117,11 @@ function draw() {
     //condição para alterar o estado do jogo
     if (obstaclesGroup.isTouching(trex)) {
       gameState = END
+      dieSound.play()
+
+      //AI para o trex
+      // trex.velocityY = -10
+      // jumpSound.play()
     }
   } else if (gameState === END) {
     //visivilidade das sprites gameOver e restart
@@ -118,6 +130,7 @@ function draw() {
 
     //Tirando a velocidade Y do trex
     trex.velocityY = 0
+    trex.changeAnimation('collided')
 
     //Parando o solo e os grupos de sprite quando o estado do jogo é END
     ground.velocityX = 0
@@ -127,6 +140,12 @@ function draw() {
     //Tempo de vida infinito para os grupos de sprites
     obstaclesGroup.setLifetimeEach(-1)
     cloudsGroup.setLifetimeEach(-1)
+
+    //if para reiniciar
+
+    if(mousePressedOver(restart)){
+      console.log("Reiniciar o jogo!")
+    }
   }
 
   //impedir que o trex caia
@@ -173,7 +192,7 @@ function criarObstacles() {
   if (frameCount % 80 === 0) {
     var obstacle = createSprite(610, 160, 10, 60)
     obstacle.scale = 0.7
-    obstacle.velocityX = -4
+    obstacle.velocityX = -(4 + (3 * score) / 100)
 
     var rand = Math.round(random(1, 6))
     switch (rand) {
