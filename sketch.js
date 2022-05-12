@@ -144,7 +144,7 @@ function draw() {
     //if para reiniciar
 
     if(mousePressedOver(restart)){
-      console.log("Reiniciar o jogo!")
+      reset()
     }
   }
 
@@ -161,6 +161,10 @@ function draw() {
 
 function gravity() {
   trex.velocityY = trex.velocityY + 0.8
+}
+
+function reset(){
+
 }
 
 function criarNuvens() {
